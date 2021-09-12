@@ -170,7 +170,7 @@ function App() {
             <ListTitle>{menu.name}</ListTitle>
             <ListItemWrapper>
               {menu.menuList.map((sub, index) => (
-                <ListItem key={index} href={sub.link}>
+                <ListItem key={index} target='_parent' href={sub.link}>
                   {sub.title}
                 </ListItem>
               ))}
@@ -179,6 +179,7 @@ function App() {
                   {socialMedia.map((social) => (
                     <FooterSocialIcon
                       href={social.link}
+                      target='_parent'
                       className={social.icon}
                     ></FooterSocialIcon>
                   ))}
