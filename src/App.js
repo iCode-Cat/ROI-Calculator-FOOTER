@@ -1,5 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
 import Logo from '../src/logo.png';
+import { useRef, useEffect } from 'react';
 
 const footerObject = {
   menus: [
@@ -160,10 +161,23 @@ const FooterSocialIcon = styled.a`
 
 function App() {
   const { menus, copyRight, socialMedia } = footerObject;
+  const footer = useRef();
+
+  const sendMessageParent = ({ message }) => {
+    window.parent.postMessage(message, '*');
+  };
+
+  useEffect(() => {
+    setInterval(() => {
+      let scrollSize = footer.current.clientHeight;
+      sendMessageParent({ message: scrollSize });
+    }, 100);
+  }, []);
+
   return (
     <>
       <GlobalStyle />
-      <Footer>
+      <Footer ref={footer}>
         <LogoImage src={Logo} />
         {menus.map((menu, index) => (
           <ListWrapper key={index} id={menu.name}>
@@ -176,8 +190,9 @@ function App() {
               ))}
               {index === menu.menuList.length && (
                 <FooterSocialWrapper>
-                  {socialMedia.map((social) => (
+                  {socialMedia.map((social, index) => (
                     <FooterSocialIcon
+                      key={index}
                       href={social.link}
                       target='_parent'
                       className={social.icon}
